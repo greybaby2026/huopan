@@ -51,7 +51,7 @@ const xTable = ref<VxeTableInstance>()
 
 const statusMap: Record<string, { label: string; type: string }> = {
   draft: { label: '鑽夌', type: 'info' },
-  active: { label: '涓婃灦', type: 'success' },
+  active: { label: '上架', type: 'success' },
   archived: { label: '褰掓', type: 'danger' },
 }
 
@@ -342,10 +342,10 @@ onMounted(() => {
       <div style="display: flex; gap: 8px">
         <el-button type="primary" @click="handleAdd">新增产品</el-button>
         <el-button @click="handleBatchPrice">鎵归噺鏀逛环</el-button>
-        <el-button @click="handleBatchStatus('active')">鎵归噺涓婃灦</el-button>
+        <el-button @click="handleBatchStatus('active')">鎵归噺上架</el-button>
         <el-button @click="handleBatchStatus('archived')">鎵归噺褰掓</el-button>
         <el-button @click="importDialogVisible = true">Excel瀵煎叆</el-button>
-        <el-button @click="handleDownloadTemplate">涓嬭浇妯澘</el-button>
+        <el-button @click="handleDownloadTemplate">下载模板</el-button>
         <span style="flex: 1"></span>
         <span style="color: #909399; line-height: 32px">共 {{ total }} 条</span>
       </div>
@@ -449,7 +449,7 @@ onMounted(() => {
             <el-form-item label="季节">
               <el-select v-model="editingProduct.season" style="width: 100%">
                 <el-option label="鏄? value="鏄? />
-                <el-option label="澶? value="澶? />
+                <el-option label="失? value="失? />
                 <el-option label="绉? value="绉? />
                 <el-option label="鍐? value="鍐? />
               </el-select>
@@ -507,13 +507,13 @@ onMounted(() => {
             <el-form-item label="状态">
               <el-select v-model="editingProduct.status" style="width: 100%">
                 <el-option label="鑽夌" value="draft" />
-                <el-option label="涓婃灦" value="active" />
+                <el-option label="上架" value="active" />
                 <el-option label="褰掓" value="archived" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="澶囨敞">
+        <el-form-item label="失囨敞">
           <el-input v-model="editingProduct.note" type="textarea" :rows="2" />
         </el-form-item>
       </el-form>
@@ -551,7 +551,7 @@ onMounted(() => {
     <!-- Excel 瀵煎叆寮圭獥 -->
     <el-dialog v-model="importDialogVisible" title="Excel 鎵归噺瀵煎叆产品" width="500px" destroy-on-close>
       <el-alert type="info" :closable="false" style="margin-bottom: 12px">
-        鍏堜笅杞芥鏉垮鍐? 鍐嶄笂浼犲鍏傚凡瀛樺湪鐨勬鍙疯嚜鍔烦杩囥?      </el-alert>
+        鍏堜笅杞芥鏉垮鍐? 鍐嶄笂新增 个, 跳过 个      </el-alert>
       <el-upload
         action="#"
         :auto-upload="false"
@@ -594,7 +594,7 @@ onMounted(() => {
       >
         <el-button type="primary">閫夋嫨图片</el-button>
         <template #tip>
-          <div style="color: #909399; font-size: 12px">鏀寔 JPG/PNG/WebP, 鍗曞紶鏈澶?10MB</div>
+          <div style="color: #909399; font-size: 12px">鏀寔 JPG/PNG/WebP, 鍗曞紶鏈失?10MB</div>
         </template>
       </el-upload>
       <el-divider />

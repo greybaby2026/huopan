@@ -161,7 +161,7 @@ async function handleBatchCreate() {
       min_order_qty: batchForm.min_order_qty,
       product_ids: batchForm.selectedProductIds,
     })
-    ElMessage.success(`宸茬敓鎴?${batchForm.selectedProductIds.length} 涓揣鐩橀`)
+    ElMessage.success(`宸茬敓鎴?${batchForm.selectedProductIds.length} 个产品`)
     batchDialogVisible.value = false
     loadData()
   } catch (e: any) {

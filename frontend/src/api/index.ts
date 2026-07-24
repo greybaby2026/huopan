@@ -17,7 +17,7 @@ http.interceptors.request.use((config) => {
   return config
 })
 
-// 响应拦截: 401 弹窗提示 (不强制跳转, 避免误触)
+// 响应拦截: 401 弹窗提示 (不强制跳转, 避免误败)
 http.interceptors.response.use(
   (response) => response,
   (error) => {

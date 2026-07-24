@@ -107,7 +107,7 @@ onMounted(async () => {
           </el-table-column>
           <el-table-column prop="min_order_qty" label="起订量" width="80" align="center" />
           <el-table-column prop="stock_status" label="状态" width="80" align="center" />
-          <el-table-column prop="note" label="澶囨敞" min-width="120" />
+          <el-table-column prop="note" label="失囨敞" min-width="120" />
         </el-table>
         <div style="margin-top: 8px; color: #909399; font-size: 12px">共 {{ total }} 条记录</div>
       </template>

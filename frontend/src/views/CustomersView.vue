@@ -190,7 +190,7 @@ onMounted(() => {
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="note" label="澶囨敞" min-width="120" show-overflow-tooltip />
+          <el-table-column prop="note" label="失囨敞" min-width="120" show-overflow-tooltip />
           <el-table-column label="操作" width="150" fixed="right">
             <template #default="{ row }">
               <el-button size="small" link @click="handleEdit(row)">编辑</el-button>
