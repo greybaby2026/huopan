@@ -52,7 +52,7 @@ const xTable = ref<VxeTableInstance>()
 const statusMap: Record<string, { label: string; type: string }> = {
   draft: { label: '鑽夌', type: 'info' },
   active: { label: '上架', type: 'success' },
-  archived: { label: '褰掓', type: 'danger' },
+  archived: { label: '归档', type: 'danger' },
 }
 
 const dialogVisible = ref(false)
@@ -74,7 +74,7 @@ const batchForm = reactive({
   field: 'supply_price' as 'supply_price' | 'cost_price',
 })
 
-// Excel 瀵煎叆寮圭獥
+// Excel 导入寮圭獥
 const importDialogVisible = ref(false)
 const importFile = ref<File | null>(null)
 const importResult = ref<{ created: number; skipped: number; errors: string[] } | null>(null)
@@ -254,17 +254,17 @@ async function handleBatchStatus(status: string) {
   }
 }
 
-// 涓嬭浇瀵煎叆妯澘
+// 涓嬭浇导入妯澘
 function handleDownloadTemplate() {
   window.open(productsApi.importTemplate(), '_blank')
 }
 
-// 瀵煎叆鏂囦欢閫夋嫨
+// 导入鏂囦欢閫夋嫨
 function handleImportFileChange(file: any) {
   importFile.value = file.raw
 }
 
-// 鎵瀵煎叆
+// 鎵导入
 async function handleImport() {
   if (!importFile.value) {
     ElMessage.warning('璇峰厛閫夋嫨鏂囦欢')
@@ -278,7 +278,7 @@ async function handleImport() {
     ElMessage.success(res.data.message)
     loadData()
   } catch (e: any) {
-    ElMessage.error('瀵煎叆失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('导入失败: ' + (e.response?.data?.detail || e.message))
   } finally {
     importing.value = false
   }
@@ -341,10 +341,10 @@ onMounted(() => {
     <el-card shadow="never" style="margin-bottom: 12px">
       <div style="display: flex; gap: 8px">
         <el-button type="primary" @click="handleAdd">新增产品</el-button>
-        <el-button @click="handleBatchPrice">鎵归噺鏀逛环</el-button>
-        <el-button @click="handleBatchStatus('active')">鎵归噺上架</el-button>
-        <el-button @click="handleBatchStatus('archived')">鎵归噺褰掓</el-button>
-        <el-button @click="importDialogVisible = true">Excel瀵煎叆</el-button>
+        <el-button @click="handleBatchPrice">批量改价</el-button>
+        <el-button @click="handleBatchStatus('active')">批量上架</el-button>
+        <el-button @click="handleBatchStatus('archived')">批量归档</el-button>
+        <el-button @click="importDialogVisible = true">Excel导入</el-button>
         <el-button @click="handleDownloadTemplate">下载模板</el-button>
         <span style="flex: 1"></span>
         <span style="color: #909399; line-height: 32px">共 {{ total }} 条</span>
@@ -508,7 +508,7 @@ onMounted(() => {
               <el-select v-model="editingProduct.status" style="width: 100%">
                 <el-option label="鑽夌" value="draft" />
                 <el-option label="上架" value="active" />
-                <el-option label="褰掓" value="archived" />
+                <el-option label="归档" value="archived" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -523,10 +523,10 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <!-- 鎵归噺鏀逛环寮圭獥 -->
-    <el-dialog v-model="batchDialogVisible" title="鎵归噺鏀逛环" width="400px">
+    <!-- 批量改价寮圭獥 -->
+    <el-dialog v-model="batchDialogVisible" title="批量改价" width="400px">
       <el-form :model="batchForm" label-width="80px">
-        <el-form-item label="鏀逛环瀛楁">
+        <el-form-item label="改价瀛楁">
           <el-radio-group v-model="batchForm.field">
             <el-radio value="supply_price">供应价</el-radio>
             <el-radio value="cost_price">成本价</el-radio>
@@ -548,8 +548,8 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <!-- Excel 瀵煎叆寮圭獥 -->
-    <el-dialog v-model="importDialogVisible" title="Excel 鎵归噺瀵煎叆产品" width="500px" destroy-on-close>
+    <!-- Excel 导入寮圭獥 -->
+    <el-dialog v-model="importDialogVisible" title="Excel 批量导入产品" width="500px" destroy-on-close>
       <el-alert type="info" :closable="false" style="margin-bottom: 12px">
         鍏堜笅杞芥鏉垮鍐? 鍐嶄笂新增 个, 跳过 个      </el-alert>
       <el-upload

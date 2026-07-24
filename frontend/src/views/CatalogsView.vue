@@ -54,7 +54,7 @@ const statusMap: Record<string, { label: string; type: string }> = {
   sold_out: { label: '鏂揣', type: 'danger' },
 }
 
-// 鎵归噺鐢熸垚寮圭獥
+// 批量鐢熸垚寮圭獥
 const batchDialogVisible = ref(false)
 const batchForm = reactive({
   name: '',
@@ -266,7 +266,7 @@ onMounted(() => {
       <el-empty v-if="catalogs.length === 0" description="鏆傛棤璐洏鏁版嵁" />
     </el-card>
 
-    <!-- 鎵归噺鐢熸垚寮圭獥 -->
+    <!-- 批量鐢熸垚寮圭獥 -->
     <el-dialog v-model="batchDialogVisible" title="鐢熸垚璐洏" width="600px" destroy-on-close>
       <el-form :model="batchForm" label-width="100px">
         <el-form-item label="货盘名称" required>
