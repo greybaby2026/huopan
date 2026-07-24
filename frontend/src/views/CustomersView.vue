@@ -45,7 +45,7 @@ async function loadLevels() {
     const res = await customersApi.levels()
     levels.value = res.data
   } catch (e: any) {
-    ElMessage.error('鍔犺浇绾埆失败: ' + e.message)
+    ElMessage.error('加载失败: ' + e.message)
   }
 }
 
@@ -57,7 +57,7 @@ async function loadCustomers() {
     const res = await customersApi.list(params)
     customers.value = res.data
   } catch (e: any) {
-    ElMessage.error('鍔犺浇瀹埛失败: ' + e.message)
+    ElMessage.error('加载失败: ' + e.message)
   } finally {
     loading.value = false
   }

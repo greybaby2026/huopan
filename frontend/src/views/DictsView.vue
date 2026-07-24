@@ -23,7 +23,7 @@ async function loadCategories() {
     const res = await authApi.listDicts('categories')
     categories.value = res.data.items
   } catch (e: any) {
-    ElMessage.error('鍔犺浇品类失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('加载品类失败: ' + (e.response?.data?.detail || e.message))
   } finally { loading.value = false }
 }
 async function loadSizes() {
@@ -32,7 +32,7 @@ async function loadSizes() {
     const res = await authApi.listDicts('sizes')
     sizes.value = res.data.items
   } catch (e: any) {
-    ElMessage.error('鍔犺浇灏虹爜失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('加载尺码失败: ' + (e.response?.data?.detail || e.message))
   } finally { loading.value = false }
 }
 async function addCategory() {
