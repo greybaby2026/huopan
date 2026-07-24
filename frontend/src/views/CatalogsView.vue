@@ -64,7 +64,8 @@ const batchForm = reactive({
   selectedProductIds: [] as number[],
 })
 
-// 璐洏鍚嶅垎缁?const catalogGroups = computed(() => {
+// 货盘名称分组
+const catalogGroups = computed(() => {
   const groups: Record<string, CatalogItem[]> = {}
   for (const c of catalogs.value) {
     if (!groups[c.name]) groups[c.name] = []
@@ -107,9 +108,9 @@ function imageUrl(path: string | null): string {
 async function handleUpdatePrice(row: CatalogItem) {
   try {
     await catalogsApi.update(row.id, { price: row.price })
-    ElMessage.success('浠锋牸宸叉洿鏂?)
+    ElMessage.success('价格已更新')
   } catch (e: any) {
-    ElMessage.error('鏇存柊澶辫触: ' + e.message)
+    ElMessage.error('更新失败: ' + e.message)
   }
 }
 
@@ -119,7 +120,7 @@ async function handleUpdateStatus(row: CatalogItem, status: string) {
     row.stock_status = status
     ElMessage.success('鐘舵佸凡鏇存柊')
   } catch (e: any) {
-    ElMessage.error('鏇存柊澶辫触: ' + e.message)
+    ElMessage.error('更新失败: ' + e.message)
   }
 }
 
@@ -127,7 +128,7 @@ async function handleDelete(row: CatalogItem) {
   try {
     await ElMessageBox.confirm(`确定删除璐洏椤?${row.product?.sku_code}?`, '提示', { type: 'warning' })
     await catalogsApi.delete(row.id)
-    ElMessage.success('宸插垹闄?)
+    ElMessage.success('已删除')
     loadData()
   } catch (e: any) {
     if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + e.message)
@@ -145,7 +146,7 @@ function openBatchDialog() {
 
 async function handleBatchCreate() {
   if (!batchForm.name) {
-    ElMessage.warning('璇峰鍐欒揣鐩樺悕绉?)
+    ElMessage.warning('请填写货盘名称')
     return
   }
   if (batchForm.selectedProductIds.length === 0) {
@@ -276,7 +277,7 @@ onMounted(() => {
             <el-option v-for="c in customers" :key="c.id" :label="c.name" :value="c.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="鎶樻墸鐜?>
+        <el-form-item label="折扣率">
           <el-input-number v-model="batchForm.level_discount_rate" :min="0" :max="1" :step="0.05" :precision="2" style="width: 100%" />
           <div style="color: #909399; font-size: 12px">用供应价乘以此折扣率自动算价, 0.8=8折</div>
         </el-form-item>

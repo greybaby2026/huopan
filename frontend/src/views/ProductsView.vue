@@ -200,7 +200,7 @@ async function handleUploadImages() {
 async function handleDeleteImage(productId: number, imageId: number) {
   try {
     await productsApi.deleteImage(productId, imageId)
-    ElMessage.success('图片宸插垹闄?)
+    ElMessage.success('图片已删除')
     loadData()
   } catch (e: any) {
     ElMessage.error('删除澶辫触: ' + e.message)
@@ -247,7 +247,7 @@ async function handleBatchStatus(status: string) {
   const ids = selectedRows.value.map((r) => r.id)
   try {
     await productsApi.batchUpdate(ids, { status })
-    ElMessage.success("宸叉洿鏂?${ids.length} 涓骇鍝佺姸鎬乣)
+    ElMessage.success('已更新 ' + ids.length + ' 个产品状态')
     loadData()
   } catch (e: any) {
     ElMessage.error('操作失败: ' + (e.response?.data?.detail || e.message))
