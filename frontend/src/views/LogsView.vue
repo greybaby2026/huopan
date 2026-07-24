@@ -23,11 +23,11 @@ const filterAction = ref('')
 const filterType = ref('')
 
 const actionMap: Record<string, string> = {
-  create: '鍒涘缓', update: '淇敼', delete: '删除',
+  create: '创建', update: '淇敼', delete: '删除',
   batch_update: '批量淇敼', export: '导出',
 }
 const typeMap: Record<string, string> = {
-  product: '产品', customer: '瀹埛', catalog: '璐洏', user: '鐢埛',
+  product: '产品', customer: '客户', catalog: '璐洏', user: '鐢埛',
 }
 
 async function loadLogs() {

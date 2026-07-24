@@ -48,7 +48,7 @@ async function loadCatalogToSheet() {
 }
 
 function exportExcel() {
-  if (!selectedCatalogName.value) { ElMessage.warning('璇峰厛閫夋嫨璐洏'); return }
+  if (!selectedCatalogName.value) { ElMessage.warning('璇峰厛选择璐洏'); return }
   window.open(exportApi.catalogExcelUrl(selectedCatalogName.value, selectedCustomerId.value), '_blank')
 }
 
@@ -74,10 +74,10 @@ onMounted(async () => {
     <el-card shadow="never" style="margin-bottom: 12px">
       <div style="display: flex; gap: 8px; align-items: center">
         <span style="font-weight: bold">货盘排版</span>
-        <el-select v-model="selectedCatalogName" placeholder="閫夋嫨璐洏" style="width: 240px" filterable>
+        <el-select v-model="selectedCatalogName" placeholder="选择璐洏" style="width: 240px" filterable>
           <el-option v-for="n in catalogNames" :key="n" :label="n" :value="n" />
         </el-select>
-        <el-select v-model="selectedCustomerId" clearable placeholder="瀹埛(鍙?" style="width: 160px">
+        <el-select v-model="selectedCustomerId" clearable placeholder="客户(鍙?" style="width: 160px">
           <el-option v-for="c in customers" :key="c.id" :label="c.name" :value="c.id" />
         </el-select>
         <el-button type="primary" @click="loadCatalogToSheet" :loading="loading">加载到表格</el-button>

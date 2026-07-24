@@ -66,35 +66,35 @@ async function loadCustomers() {
 function levelName(id: number | null): string {
   if (!id) return '-'
   const level = levels.value.find((l) => l.id === id)
-  return level ? `${level.name}(${(level.discount_rate * 10).toFixed(1)}鎶?` : '-'
+  return level ? `${level.name}(${(level.discount_rate * 10).toFixed(1)}折)` : '-'
 }
 
 function handleAdd() {
   isEdit.value = false
-  dialogTitle.value = '新增瀹埛'
+  dialogTitle.value = '新增客户'
   editingCustomer.value = { name: '', company: '', contact: '', phone: '', address: '', level_id: null, is_active: true, note: '' }
   dialogVisible.value = true
 }
 
 function handleEdit(row: Customer) {
   isEdit.value = true
-  dialogTitle.value = '编辑瀹埛'
+  dialogTitle.value = '编辑客户'
   editingCustomer.value = { ...row }
   dialogVisible.value = true
 }
 
 async function handleSave() {
   if (!editingCustomer.value.name) {
-    ElMessage.warning('瀹埛鍚嶇蹇呭')
+    ElMessage.warning('客户鍚嶇必填')
     return
   }
   try {
     if (isEdit.value && editingCustomer.value.id) {
       await customersApi.update(editingCustomer.value.id, editingCustomer.value)
-      ElMessage.success('鏇存柊鎴愬姛')
+      ElMessage.success('更新成功')
     } else {
       await customersApi.create(editingCustomer.value)
-      ElMessage.success('鍒涘缓鎴愬姛')
+      ElMessage.success('创建成功')
     }
     dialogVisible.value = false
     loadCustomers()
@@ -105,7 +105,7 @@ async function handleSave() {
 
 async function handleDelete(row: Customer) {
   try {
-    await ElMessageBox.confirm(`确定删除瀹埛 ${row.name}?`, '提示', { type: 'warning' })
+    await ElMessageBox.confirm(`确定删除客户 ${row.name}?`, '提示', { type: 'warning' })
     await customersApi.delete(row.id)
     ElMessage.success('已删除')
     loadCustomers()
@@ -126,16 +126,16 @@ function handleEditLevel(row: CustomerLevel) {
 
 async function handleSaveLevel() {
   if (!editingLevel.value.name) {
-    ElMessage.warning('绾埆鍚嶇蹇呭')
+    ElMessage.warning('绾埆鍚嶇必填')
     return
   }
   try {
     if (editingLevel.value.id) {
       await customersApi.updateLevel(editingLevel.value.id, editingLevel.value)
-      ElMessage.success('鏇存柊鎴愬姛')
+      ElMessage.success('更新成功')
     } else {
       await customersApi.createLevel(editingLevel.value)
-      ElMessage.success('鍒涘缓鎴愬姛')
+      ElMessage.success('创建成功')
     }
     levelDialogVisible.value = false
     loadLevels()
@@ -169,14 +169,14 @@ onMounted(() => {
         <div style="display: flex; gap: 8px">
           <el-input v-model="searchKeyword" placeholder="搜索客户名称/公司/联系人" clearable style="width: 240px" @keyup.enter="loadCustomers" />
           <el-button type="primary" @click="loadCustomers">搜索</el-button>
-          <el-button type="success" @click="handleAdd">新增瀹埛</el-button>
+          <el-button type="success" @click="handleAdd">新增客户</el-button>
         </div>
       </el-card>
 
       <el-card shadow="never">
         <el-table :data="customers" v-loading="loading" border style="width: 100%">
           <el-table-column type="index" label="#" width="50" />
-          <el-table-column prop="name" label="瀹埛鍚嶇" width="150" />
+          <el-table-column prop="name" label="客户鍚嶇" width="150" />
           <el-table-column prop="company" label="公司" width="150" />
           <el-table-column prop="contact" label="联系人" width="100" />
           <el-table-column prop="phone" label="电话" width="130" />
@@ -225,7 +225,7 @@ onMounted(() => {
     </el-tab-pane>
   </el-tabs>
 
-  <!-- 瀹埛寮圭獥 -->
+  <!-- 客户寮圭獥 -->
   <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px" destroy-on-close>
     <el-form :model="editingCustomer" label-width="80px">
       <el-form-item label="鍚嶇" required><el-input v-model="editingCustomer.name" /></el-form-item>
@@ -235,7 +235,7 @@ onMounted(() => {
       <el-form-item label="鍦板潃"><el-input v-model="editingCustomer.address" /></el-form-item>
       <el-form-item label="绾埆">
         <el-select v-model="editingCustomer.level_id" clearable style="width: 100%">
-          <el-option v-for="l in levels" :key="l.id" :label="`${l.name} (${(l.discount_rate * 10).toFixed(1)}鎶?`" :value="l.id" />
+          <el-option v-for="l in levels" :key="l.id" :label="`${l.name} (${(l.discount_rate * 10).toFixed(1)}折)`" :value="l.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="状态">

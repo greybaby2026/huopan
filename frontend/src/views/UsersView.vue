@@ -58,16 +58,16 @@ async function handleSave() {
         display_name: editingUser.value.display_name,
         role: editingUser.value.role,
       })
-      ElMessage.success('鏇存柊鎴愬姛')
+      ElMessage.success('更新成功')
     } else {
-      if (!editingUser.value.password) { ElMessage.warning('密码蹇呭'); return }
+      if (!editingUser.value.password) { ElMessage.warning('密码必填'); return }
       await authApi.createUser({
         username: editingUser.value.username,
         password: editingUser.value.password,
         display_name: editingUser.value.display_name || undefined,
         role: editingUser.value.role,
       })
-      ElMessage.success('鍒涘缓鎴愬姛')
+      ElMessage.success('创建成功')
     }
     dialogVisible.value = false
     loadUsers()
@@ -100,7 +100,7 @@ onMounted(loadUsers)
         <el-table-column prop="id" label="ID" width="60" />
         <el-table-column prop="username" label="用户名" width="150" />
         <el-table-column prop="display_name" label="显示名" width="150" />
-        <el-table-column label="瑙掕壊" width="100">
+        <el-table-column label="角色" width="100">
           <template #default="{ row }">{{ roleMap[row.role] || row.role }}</template>
         </el-table-column>
         <el-table-column label="状态" width="80">

@@ -17,7 +17,7 @@ async function handleLogin() {
     const res = await authApi.login(username.value, password.value)
     localStorage.setItem('huopan_token', res.data.token)
     localStorage.setItem('huopan_user', JSON.stringify(res.data))
-    ElMessage.success('登录鎴愬姛')
+    ElMessage.success('登录成功')
     router.push('/')
   } catch (e: any) {
     ElMessage.error('登录失败: ' + (e.response?.data?.detail || e.message))

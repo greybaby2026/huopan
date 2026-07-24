@@ -148,10 +148,10 @@ async function handleSave() {
   try {
     if (isEdit.value && editingProduct.value.id) {
       await productsApi.update(editingProduct.value.id, editingProduct.value)
-      ElMessage.success('鏇存柊鎴愬姛')
+      ElMessage.success('更新成功')
     } else {
       await productsApi.create(editingProduct.value)
-      ElMessage.success('鍒涘缓鎴愬姛')
+      ElMessage.success('创建成功')
     }
     dialogVisible.value = false
     loadData()
@@ -213,7 +213,7 @@ function handleSelectionChange({ records }: any) {
 
 function handleBatchPrice() {
   if (selectedRows.value.length === 0) {
-    ElMessage.warning('璇峰厛閫夋嫨产品')
+    ElMessage.warning('璇峰厛选择产品')
     return
   }
   batchDialogVisible.value = true
@@ -241,7 +241,7 @@ async function handleBatchUpdate() {
 
 async function handleBatchStatus(status: string) {
   if (selectedRows.value.length === 0) {
-    ElMessage.warning('璇峰厛閫夋嫨产品')
+    ElMessage.warning('璇峰厛选择产品')
     return
   }
   const ids = selectedRows.value.map((r) => r.id)
@@ -254,12 +254,12 @@ async function handleBatchStatus(status: string) {
   }
 }
 
-// 涓嬭浇导入妯澘
+// 下载导入妯澘
 function handleDownloadTemplate() {
   window.open(productsApi.importTemplate(), '_blank')
 }
 
-// 导入鏂囦欢閫夋嫨
+// 导入鏂囦欢选择
 function handleImportFileChange(file: any) {
   importFile.value = file.raw
 }
@@ -267,7 +267,7 @@ function handleImportFileChange(file: any) {
 // 鎵导入
 async function handleImport() {
   if (!importFile.value) {
-    ElMessage.warning('璇峰厛閫夋嫨鏂囦欢')
+    ElMessage.warning('璇峰厛选择鏂囦欢')
     return
   }
   importing.value = true
@@ -492,14 +492,14 @@ onMounted(() => {
         </el-row>
         <el-row :gutter="16">
           <el-col :span="8">
-            <el-form-item label="搴撳瓨">
+            <el-form-item label="库存">
               <el-input-number v-model="editingProduct.stock" :min="0" style="width: 100%" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="灏虹爜">
+            <el-form-item label="尺码">
               <el-input v-model="editingProduct.size_range" placeholder="S,M,L,XL" />
             </el-form-item>
           </el-col>
@@ -551,7 +551,7 @@ onMounted(() => {
     <!-- Excel 导入寮圭獥 -->
     <el-dialog v-model="importDialogVisible" title="Excel 批量导入产品" width="500px" destroy-on-close>
       <el-alert type="info" :closable="false" style="margin-bottom: 12px">
-        鍏堜笅杞芥鏉垮鍐? 鍐嶄笂新增 个, 跳过 个      </el-alert>
+        关堜笅杞芥条垮鍐? 鍐嶄笂新增 个, 跳过 个      </el-alert>
       <el-upload
         action="#"
         :auto-upload="false"
@@ -559,7 +559,7 @@ onMounted(() => {
         accept=".xlsx,.xls"
         :limit="1"
       >
-        <el-button type="primary">閫夋嫨 Excel 鏂囦欢</el-button>
+        <el-button type="primary">选择 Excel 鏂囦欢</el-button>
         <template #tip>
           <div style="color: #909399; font-size: 12px">浠呮敮鎸?.xlsx 鏍煎紡</div>
         </template>
@@ -592,7 +592,7 @@ onMounted(() => {
         accept="image/jpeg,image/png,image/webp"
         list-type="picture"
       >
-        <el-button type="primary">閫夋嫨图片</el-button>
+        <el-button type="primary">选择图片</el-button>
         <template #tip>
           <div style="color: #909399; font-size: 12px">鏀寔 JPG/PNG/WebP, 鍗曞紶鏈失?10MB</div>
         </template>

@@ -39,7 +39,7 @@ async function addCategory() {
   if (!newName.value.trim()) { ElMessage.warning('请输入品类名称'); return }
   try {
     await authApi.createDict('categories', { name: newName.value.trim(), sort_order: newSort.value })
-    ElMessage.success('娣诲姞鎴愬姛')
+    ElMessage.success('娣诲姞成功')
     newName.value = ''; newSort.value = 0
     loadCategories()
   } catch (e: any) {
@@ -60,7 +60,7 @@ async function addSize() {
   if (!newName.value.trim()) { ElMessage.warning('请输入尺码'); return }
   try {
     await authApi.createDict('sizes', { name: newName.value.trim(), sort_order: newSort.value })
-    ElMessage.success('娣诲姞鎴愬姛')
+    ElMessage.success('娣诲姞成功')
     newName.value = ''; newSort.value = 0
     loadSizes()
   } catch (e: any) {

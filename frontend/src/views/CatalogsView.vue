@@ -54,7 +54,7 @@ const statusMap: Record<string, { label: string; type: string }> = {
   sold_out: { label: '鏂揣', type: 'danger' },
 }
 
-// 批量鐢熸垚寮圭獥
+// 批量生成寮圭獥
 const batchDialogVisible = ref(false)
 const batchForm = reactive({
   name: '',
@@ -118,7 +118,7 @@ async function handleUpdateStatus(row: CatalogItem, status: string) {
   try {
     await catalogsApi.update(row.id, { stock_status: status })
     row.stock_status = status
-    ElMessage.success('鐘舵佸凡鏇存柊')
+    ElMessage.success('状态佸凡更新')
   } catch (e: any) {
     ElMessage.error('更新失败: ' + e.message)
   }
@@ -165,7 +165,7 @@ async function handleBatchCreate() {
     batchDialogVisible.value = false
     loadData()
   } catch (e: any) {
-    ElMessage.error('鐢熸垚失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('生成失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -190,11 +190,11 @@ onMounted(() => {
     <el-card shadow="never" style="margin-bottom: 12px">
       <div style="display: flex; gap: 8px; align-items: center">
         <el-input v-model="searchName" placeholder="璐洏鍚嶇" clearable style="width: 200px" @keyup.enter="loadData" />
-        <el-select v-model="searchCustomerId" clearable placeholder="瀹埛" style="width: 160px" @change="loadData">
+        <el-select v-model="searchCustomerId" clearable placeholder="客户" style="width: 160px" @change="loadData">
           <el-option v-for="c in customers" :key="c.id" :label="c.name" :value="c.id" />
         </el-select>
         <el-button type="primary" @click="loadData">搜索</el-button>
-        <el-button type="success" @click="openBatchDialog">鐢熸垚璐洏</el-button>
+        <el-button type="success" @click="openBatchDialog">生成璐洏</el-button>
       </div>
     </el-card>
 
@@ -263,11 +263,11 @@ onMounted(() => {
           </el-table-column>
         </el-table>
       </div>
-      <el-empty v-if="catalogs.length === 0" description="鏆傛棤璐洏鏁版嵁" />
+      <el-empty v-if="catalogs.length === 0" description="鏆傛棤璐洏数据" />
     </el-card>
 
-    <!-- 批量鐢熸垚寮圭獥 -->
-    <el-dialog v-model="batchDialogVisible" title="鐢熸垚璐洏" width="600px" destroy-on-close>
+    <!-- 批量生成寮圭獥 -->
+    <el-dialog v-model="batchDialogVisible" title="生成璐洏" width="600px" destroy-on-close>
       <el-form :model="batchForm" label-width="100px">
         <el-form-item label="货盘名称" required>
           <el-input v-model="batchForm.name" placeholder="如: 2026春季-A级客户" />
@@ -294,7 +294,7 @@ onMounted(() => {
       </el-form>
       <template #footer>
         <el-button @click="batchDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleBatchCreate">鐢熸垚</el-button>
+        <el-button type="primary" @click="handleBatchCreate">生成</el-button>
       </template>
     </el-dialog>
   </div>
