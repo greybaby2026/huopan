@@ -156,7 +156,7 @@ async function handleSave() {
     dialogVisible.value = false
     loadData()
   } catch (e: any) {
-    ElMessage.error('保存澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('保存失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -167,7 +167,7 @@ async function handleDelete(row: Product) {
     ElMessage.success('已删除')
     loadData()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + (e.response?.data?.detail || e.message))
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -193,7 +193,7 @@ async function handleUploadImages() {
     imageDialogVisible.value = false
     loadData()
   } catch (e: any) {
-    ElMessage.error('涓婁紶澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('上传失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -203,7 +203,7 @@ async function handleDeleteImage(productId: number, imageId: number) {
     ElMessage.success('图片已删除')
     loadData()
   } catch (e: any) {
-    ElMessage.error('删除澶辫触: ' + e.message)
+    ElMessage.error('删除失败: ' + e.message)
   }
 }
 
@@ -278,7 +278,7 @@ async function handleImport() {
     ElMessage.success(res.data.message)
     loadData()
   } catch (e: any) {
-    ElMessage.error('瀵煎叆澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('瀵煎叆失败: ' + (e.response?.data?.detail || e.message))
   } finally {
     importing.value = false
   }
@@ -626,7 +626,7 @@ onMounted(() => {
       </div>
       <template #footer>
         <el-button @click="imageDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleUploadImages">涓婁紶閫変腑图片</el-button>
+        <el-button type="primary" @click="handleUploadImages">上传閫変腑图片</el-button>
       </template>
     </el-dialog>
   </div>

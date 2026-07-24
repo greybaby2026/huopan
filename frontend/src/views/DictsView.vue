@@ -23,7 +23,7 @@ async function loadCategories() {
     const res = await authApi.listDicts('categories')
     categories.value = res.data.items
   } catch (e: any) {
-    ElMessage.error('鍔犺浇品类澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('鍔犺浇品类失败: ' + (e.response?.data?.detail || e.message))
   } finally { loading.value = false }
 }
 async function loadSizes() {
@@ -32,7 +32,7 @@ async function loadSizes() {
     const res = await authApi.listDicts('sizes')
     sizes.value = res.data.items
   } catch (e: any) {
-    ElMessage.error('鍔犺浇灏虹爜澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('鍔犺浇灏虹爜失败: ' + (e.response?.data?.detail || e.message))
   } finally { loading.value = false }
 }
 async function addCategory() {
@@ -43,7 +43,7 @@ async function addCategory() {
     newName.value = ''; newSort.value = 0
     loadCategories()
   } catch (e: any) {
-    ElMessage.error('娣诲姞澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('娣诲姞失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 async function deleteCategory(id: number) {
@@ -53,7 +53,7 @@ async function deleteCategory(id: number) {
     ElMessage.success('已删除')
     loadCategories()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + (e.response?.data?.detail || e.message))
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 async function addSize() {
@@ -64,7 +64,7 @@ async function addSize() {
     newName.value = ''; newSort.value = 0
     loadSizes()
   } catch (e: any) {
-    ElMessage.error('娣诲姞澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('娣诲姞失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 async function deleteSize(id: number) {
@@ -74,7 +74,7 @@ async function deleteSize(id: number) {
     ElMessage.success('已删除')
     loadSizes()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + (e.response?.data?.detail || e.message))
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 onMounted(() => {

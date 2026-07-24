@@ -20,7 +20,7 @@ async function handleLogin() {
     ElMessage.success('登录鎴愬姛')
     router.push('/')
   } catch (e: any) {
-    ElMessage.error('登录澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('登录失败: ' + (e.response?.data?.detail || e.message))
   } finally {
     loading.value = false
   }

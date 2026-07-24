@@ -131,7 +131,7 @@ async function handleDelete(row: CatalogItem) {
     ElMessage.success('已删除')
     loadData()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + e.message)
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + e.message)
   }
 }
 
@@ -165,7 +165,7 @@ async function handleBatchCreate() {
     batchDialogVisible.value = false
     loadData()
   } catch (e: any) {
-    ElMessage.error('鐢熸垚澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('鐢熸垚失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 

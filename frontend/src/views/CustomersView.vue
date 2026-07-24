@@ -45,7 +45,7 @@ async function loadLevels() {
     const res = await customersApi.levels()
     levels.value = res.data
   } catch (e: any) {
-    ElMessage.error('鍔犺浇绾埆澶辫触: ' + e.message)
+    ElMessage.error('鍔犺浇绾埆失败: ' + e.message)
   }
 }
 
@@ -57,7 +57,7 @@ async function loadCustomers() {
     const res = await customersApi.list(params)
     customers.value = res.data
   } catch (e: any) {
-    ElMessage.error('鍔犺浇瀹埛澶辫触: ' + e.message)
+    ElMessage.error('鍔犺浇瀹埛失败: ' + e.message)
   } finally {
     loading.value = false
   }
@@ -99,7 +99,7 @@ async function handleSave() {
     dialogVisible.value = false
     loadCustomers()
   } catch (e: any) {
-    ElMessage.error('保存澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('保存失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -110,7 +110,7 @@ async function handleDelete(row: Customer) {
     ElMessage.success('已删除')
     loadCustomers()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + e.message)
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + e.message)
   }
 }
 
@@ -140,7 +140,7 @@ async function handleSaveLevel() {
     levelDialogVisible.value = false
     loadLevels()
   } catch (e: any) {
-    ElMessage.error('保存澶辫触: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('保存失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 
@@ -151,7 +151,7 @@ async function handleDeleteLevel(row: CustomerLevel) {
     ElMessage.success('已删除')
     loadLevels()
   } catch (e: any) {
-    if (e !== 'cancel') ElMessage.error('删除澶辫触: ' + e.message)
+    if (e !== 'cancel') ElMessage.error('删除失败: ' + e.message)
   }
 }
 
