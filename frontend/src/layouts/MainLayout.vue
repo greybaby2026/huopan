@@ -32,7 +32,7 @@ function handleLogout() {
   <el-container style="height: 100vh">
     <el-aside :width="isCollapse ? '64px' : '200px'" style="background: #304156">
       <div style="height: 60px; display: flex; align-items: center; justify-content: center; color: #fff">
-        <span v-if="!isCollapse" style="font-size: 16px; font-weight: bold">浠ゅ皢璐х洏绯荤粺</span>
+        <span v-if="!isCollapse" style="font-size: 16px; font-weight: bold">令将货盘系统</span>
         <el-icon v-else :size="24"><Box /></el-icon>
       </div>
       <el-menu
@@ -73,7 +73,7 @@ function handleLogout() {
         </el-menu-item>
         <el-menu-item index="/dicts">
           <el-icon><Coin /></el-icon>
-          <span>品类灏虹爜</span>
+          <span>品类尺码</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

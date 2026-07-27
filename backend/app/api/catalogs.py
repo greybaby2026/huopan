@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
+from app.core.dependencies import get_current_user
 from app.models.catalog import Catalog, PriceHistory, StockStatus
 from app.models.product import Product
 from app.schemas.catalog import CatalogCreate, CatalogUpdate, CatalogOut, CatalogBatchCreate
@@ -70,7 +71,11 @@ async def list_catalogs(
 
 
 @router.post("", response_model=CatalogOut)
-async def create_catalog(data: CatalogCreate, db: AsyncSession = Depends(get_db)):
+async def create_catalog(
+    data: CatalogCreate,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     product = await db.get(Product, data.product_id)
     if not product:
         raise HTTPException(404, "产品不存在")
@@ -99,7 +104,9 @@ async def create_catalog(data: CatalogCreate, db: AsyncSession = Depends(get_db)
 
 @router.put("/{catalog_id}", response_model=CatalogOut)
 async def update_catalog(
-    catalog_id: int, data: CatalogUpdate, db: AsyncSession = Depends(get_db)
+    catalog_id: int, data: CatalogUpdate,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     catalog = await db.get(Catalog, catalog_id)
     if not catalog:
@@ -134,7 +141,11 @@ async def update_catalog(
 
 
 @router.delete("/{catalog_id}")
-async def delete_catalog(catalog_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_catalog(
+    catalog_id: int,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     catalog = await db.get(Catalog, catalog_id)
     if not catalog:
         raise HTTPException(404, "货盘项不存在")
@@ -145,7 +156,9 @@ async def delete_catalog(catalog_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/batch", response_model=dict)
 async def batch_create_catalogs(
-    data: CatalogBatchCreate, db: AsyncSession = Depends(get_db)
+    data: CatalogBatchCreate,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """按客户级别批量生成货盘: 选产品范围 + 折扣率 -> 自动算价"""
     result = await db.execute(

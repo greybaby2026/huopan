@@ -39,11 +39,11 @@ async function addCategory() {
   if (!newName.value.trim()) { ElMessage.warning('请输入品类名称'); return }
   try {
     await authApi.createDict('categories', { name: newName.value.trim(), sort_order: newSort.value })
-    ElMessage.success('娣诲姞成功')
+    ElMessage.success('添加成功')
     newName.value = ''; newSort.value = 0
     loadCategories()
   } catch (e: any) {
-    ElMessage.error('娣诲姞失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('添加失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 async function deleteCategory(id: number) {
@@ -60,11 +60,11 @@ async function addSize() {
   if (!newName.value.trim()) { ElMessage.warning('请输入尺码'); return }
   try {
     await authApi.createDict('sizes', { name: newName.value.trim(), sort_order: newSort.value })
-    ElMessage.success('娣诲姞成功')
+    ElMessage.success('添加成功')
     newName.value = ''; newSort.value = 0
     loadSizes()
   } catch (e: any) {
-    ElMessage.error('娣诲姞失败: ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('添加失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 async function deleteSize(id: number) {
@@ -99,8 +99,8 @@ onMounted(() => {
       <el-card shadow="never" v-loading="loading">
         <el-table :data="categories" border>
           <el-table-column prop="id" label="ID" width="60" />
-          <el-table-column prop="name" label="品类鍚嶇" min-width="200" />
-          <el-table-column prop="sort_order" label="鎺掑簭" width="80" />
+          <el-table-column prop="name" label="品类名称" min-width="200" />
+          <el-table-column prop="sort_order" label="排序" width="80" />
           <el-table-column label="操作" width="100">
             <template #default="{ row }">
               <el-button size="small" link type="danger" @click="deleteCategory(row.id)">删除</el-button>
@@ -125,7 +125,7 @@ onMounted(() => {
         <el-table :data="sizes" border>
           <el-table-column prop="id" label="ID" width="60" />
           <el-table-column prop="name" label="尺码" min-width="200" />
-          <el-table-column prop="sort_order" label="鎺掑簭" width="80" />
+          <el-table-column prop="sort_order" label="排序" width="80" />
           <el-table-column label="操作" width="100">
             <template #default="{ row }">
               <el-button size="small" link type="danger" @click="deleteSize(row.id)">删除</el-button>

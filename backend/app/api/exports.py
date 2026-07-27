@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.config import settings
-from app.core.dependencies import get_current_user_optional
+from app.core.dependencies import get_current_user
 from app.models.catalog import Catalog, StockStatus
 from app.models.customer import Customer
 from app.models.product import Product
@@ -25,7 +25,7 @@ router = APIRouter(prefix="/export", tags=["导出"])
 async def export_catalog_excel(
     catalog_name: str,
     customer_id: int | None = None,
-    user: dict = Depends(get_current_user_optional),
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """导出指定货盘为 Excel, 含图片嵌入"""
@@ -100,6 +100,7 @@ async def export_catalog_excel(
 async def export_catalog_images(
     catalog_name: str,
     customer_id: int | None = None,
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """导出货盘所有产品图片为 zip 包"""

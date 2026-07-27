@@ -9,7 +9,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.core.config import settings
-from app.core.dependencies import get_current_user_optional
+from app.core.dependencies import get_current_user
 from app.models.product import Product, ProductImage, ProductStatus
 from app.schemas.product import (
     ProductCreate, ProductUpdate, ProductOut,
@@ -78,7 +78,7 @@ async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
 @router.post("", response_model=ProductOut)
 async def create_product(
     data: ProductCreate,
-    user: dict = Depends(get_current_user_optional),
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     # 款号唯一检查
@@ -117,7 +117,7 @@ async def create_product(
 @router.put("/{product_id}", response_model=ProductOut)
 async def update_product(
     product_id: int, data: ProductUpdate,
-    user: dict = Depends(get_current_user_optional),
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     product = await db.get(Product, product_id)
@@ -166,7 +166,7 @@ async def update_product(
 @router.delete("/{product_id}")
 async def delete_product(
     product_id: int,
-    user: dict = Depends(get_current_user_optional),
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     product = await db.get(Product, product_id)
@@ -192,6 +192,7 @@ async def delete_product(
 async def upload_product_images(
     product_id: int,
     files: list[UploadFile] = File(...),
+    user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """为产品上传图片, 支持批量"""
@@ -228,7 +229,9 @@ async def upload_product_images(
 
 @router.delete("/{product_id}/images/{image_id}")
 async def delete_product_image(
-    product_id: int, image_id: int, db: AsyncSession = Depends(get_db)
+    product_id: int, image_id: int,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     img = await db.get(ProductImage, image_id)
     if not img or img.product_id != product_id:
@@ -248,7 +251,9 @@ async def delete_product_image(
 
 @router.post("/batch", response_model=dict)
 async def batch_update_products(
-    data: ProductBatchUpdate, db: AsyncSession = Depends(get_db)
+    data: ProductBatchUpdate,
+    user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """批量更新产品"""
     update_data = data.updates.model_dump(exclude_unset=True)

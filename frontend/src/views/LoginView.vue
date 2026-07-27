@@ -32,7 +32,7 @@ async function handleInitAdmin() {
     username.value = 'admin'
     password.value = 'admin123'
   } catch (e: any) {
-    ElMessage.error('鍒濆鍖栧璐? ' + (e.response?.data?.detail || e.message))
+    ElMessage.error('初始化失败: ' + (e.response?.data?.detail || e.message))
   }
 }
 </script>
@@ -55,7 +55,7 @@ async function handleInitAdmin() {
         </el-button>
       </el-form>
       <div style="text-align: center; margin-top: 16px">
-        <el-button link type="info" @click="handleInitAdmin">鍒濆鍖栫鐞嗗憳璐彿</el-button>
+        <el-button link type="info" @click="handleInitAdmin">初始化管理员账号</el-button>
       </div>
     </el-card>
   </div>

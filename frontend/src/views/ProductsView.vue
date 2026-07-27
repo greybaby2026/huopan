@@ -50,7 +50,7 @@ const categoryOptions = ref<string[]>([])
 const xTable = ref<VxeTableInstance>()
 
 const statusMap: Record<string, { label: string; type: string }> = {
-  draft: { label: '鑽夌', type: 'info' },
+  draft: { label: '草稿', type: 'info' },
   active: { label: '上架', type: 'success' },
   archived: { label: '归档', type: 'danger' },
 }
@@ -74,7 +74,7 @@ const batchForm = reactive({
   field: 'supply_price' as 'supply_price' | 'cost_price',
 })
 
-// Excel 导入寮圭獥
+// Excel 导入弹窗
 const importDialogVisible = ref(false)
 const importFile = ref<File | null>(null)
 const importResult = ref<{ created: number; skipped: number; errors: string[] } | null>(null)
@@ -108,7 +108,7 @@ async function loadCategories() {
     const res = await productsApi.categories()
     categoryOptions.value = res.data.categories
   } catch {
-    // 蹇界暐
+    // 忽略
   }
 }
 
@@ -213,7 +213,7 @@ function handleSelectionChange({ records }: any) {
 
 function handleBatchPrice() {
   if (selectedRows.value.length === 0) {
-    ElMessage.warning('璇峰厛选择产品')
+    ElMessage.warning('请先选择产品')
     return
   }
   batchDialogVisible.value = true
@@ -241,7 +241,7 @@ async function handleBatchUpdate() {
 
 async function handleBatchStatus(status: string) {
   if (selectedRows.value.length === 0) {
-    ElMessage.warning('璇峰厛选择产品')
+    ElMessage.warning('请先选择产品')
     return
   }
   const ids = selectedRows.value.map((r) => r.id)
@@ -254,20 +254,20 @@ async function handleBatchStatus(status: string) {
   }
 }
 
-// 下载导入妯澘
+// 下载导入模板
 function handleDownloadTemplate() {
   window.open(productsApi.importTemplate(), '_blank')
 }
 
-// 导入鏂囦欢选择
+// 导入文件选择
 function handleImportFileChange(file: any) {
   importFile.value = file.raw
 }
 
-// 鎵导入
+// 批量导入
 async function handleImport() {
   if (!importFile.value) {
-    ElMessage.warning('璇峰厛选择鏂囦欢')
+    ElMessage.warning('请先选择文件')
     return
   }
   importing.value = true
@@ -378,8 +378,8 @@ onMounted(() => {
             <span v-else style="color: #c0c4cc">无图</span>
           </template>
         </vxe-column>
-        <vxe-column field="sku_code" title="娆惧彿" width="120" sortable />
-        <vxe-column field="name" title="鍚嶇" min-width="150" />
+        <vxe-column field="sku_code" title="款号" width="120" sortable />
+        <vxe-column field="name" title="名称" min-width="150" />
         <vxe-column field="category" title="品类" width="100" sortable />
         <vxe-column field="color" title="颜色" width="80" />
         <vxe-column field="season" title="季节" width="70" />
@@ -417,17 +417,17 @@ onMounted(() => {
       />
     </el-card>
 
-    <!-- 新增/编辑寮圭獥 -->
+    <!-- 新增/编辑弹窗 -->
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="600px" destroy-on-close>
       <el-form :model="editingProduct" label-width="80px">
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="娆惧彿" required>
+            <el-form-item label="款号" required>
               <el-input v-model="editingProduct.sku_code" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="鍚嶇" required>
+            <el-form-item label="名称" required>
               <el-input v-model="editingProduct.name" />
             </el-form-item>
           </el-col>
@@ -448,50 +448,50 @@ onMounted(() => {
           <el-col :span="8">
             <el-form-item label="季节">
               <el-select v-model="editingProduct.season" style="width: 100%">
-                <el-option label="鏄? value="鏄? />
-                <el-option label="失? value="失? />
-                <el-option label="绉? value="绉? />
-                <el-option label="鍐? value="鍐? />
+                <el-option label="春" value="春" />
+                <el-option label="夏" value="夏" />
+                <el-option label="秋" value="秋" />
+                <el-option label="冬" value="冬" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="16">
           <el-col :span="8">
-            <el-form-item label="鑺卞瀷">
+            <el-form-item label="花型">
               <el-input v-model="editingProduct.pattern" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="椋庢牸">
+            <el-form-item label="风格">
               <el-input v-model="editingProduct.style" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="闈枡">
+            <el-form-item label="面料">
               <el-input v-model="editingProduct.fabric" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="16">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="成本价">
               <el-input-number v-model="editingProduct.cost_price" :min="0" :precision="2" style="width: 100%" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="供应价">
               <el-input-number v-model="editingProduct.supply_price" :min="0" :precision="2" style="width: 100%" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+        </el-row>
+        <el-row :gutter="16">
+          <el-col :span="12">
             <el-form-item label="零售价">
               <el-input-number v-model="editingProduct.retail_price" :min="0" :precision="2" style="width: 100%" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="16">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="库存">
               <el-input-number v-model="editingProduct.stock" :min="0" style="width: 100%" />
             </el-form-item>
@@ -506,14 +506,14 @@ onMounted(() => {
           <el-col :span="12">
             <el-form-item label="状态">
               <el-select v-model="editingProduct.status" style="width: 100%">
-                <el-option label="鑽夌" value="draft" />
+                <el-option label="草稿" value="draft" />
                 <el-option label="上架" value="active" />
                 <el-option label="归档" value="archived" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="失囨敞">
+        <el-form-item label="备注">
           <el-input v-model="editingProduct.note" type="textarea" :rows="2" />
         </el-form-item>
       </el-form>
@@ -523,16 +523,16 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <!-- 批量改价寮圭獥 -->
+    <!-- 批量改价弹窗 -->
     <el-dialog v-model="batchDialogVisible" title="批量改价" width="400px">
       <el-form :model="batchForm" label-width="80px">
-        <el-form-item label="改价瀛楁">
+        <el-form-item label="改价字段">
           <el-radio-group v-model="batchForm.field">
             <el-radio value="supply_price">供应价</el-radio>
             <el-radio value="cost_price">成本价</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="璋冩暣鏂瑰紡">
+        <el-form-item label="调整方式">
           <el-radio-group v-model="batchForm.type">
             <el-radio value="percent">百分比(%)</el-radio>
             <el-radio value="fixed">固定值</el-radio>
@@ -548,10 +548,10 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <!-- Excel 导入寮圭獥 -->
+    <!-- Excel 导入弹窗 -->
     <el-dialog v-model="importDialogVisible" title="Excel 批量导入产品" width="500px" destroy-on-close>
       <el-alert type="info" :closable="false" style="margin-bottom: 12px">
-        关堜笅杞芥条垮鍐? 鍐嶄笂新增 个, 跳过 个      </el-alert>
+        先下载模板再上传，已存在的款号自动跳过。      </el-alert>
       <el-upload
         action="#"
         :auto-upload="false"
@@ -559,9 +559,9 @@ onMounted(() => {
         accept=".xlsx,.xls"
         :limit="1"
       >
-        <el-button type="primary">选择 Excel 鏂囦欢</el-button>
+        <el-button type="primary">选择 Excel 文件</el-button>
         <template #tip>
-          <div style="color: #909399; font-size: 12px">浠呮敮鎸?.xlsx 鏍煎紡</div>
+          <div style="color: #909399; font-size: 12px">仅支持 .xlsx 格式</div>
         </template>
       </el-upload>
       <div v-if="importResult" style="margin-top: 12px">
@@ -582,7 +582,7 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <!-- 图片绠悊寮圭獥 -->
+    <!-- 图片管理弹窗 -->
     <el-dialog v-model="imageDialogVisible" :title="'图片管理 - ' + imageProductName" width="600px">
       <el-upload
         action="#"
@@ -594,12 +594,12 @@ onMounted(() => {
       >
         <el-button type="primary">选择图片</el-button>
         <template #tip>
-          <div style="color: #909399; font-size: 12px">鏀寔 JPG/PNG/WebP, 鍗曞紶鏈失?10MB</div>
+          <div style="color: #909399; font-size: 12px">支持 JPG/PNG/WebP, 单张最大10MB</div>
         </template>
       </el-upload>
       <el-divider />
       <div v-if="imageProductId">
-        <h4>宸叉湁图片</h4>
+        <h4>已有图片</h4>
         <div style="display: flex; flex-wrap: wrap; gap: 8px">
           <div
             v-for="img in tableData.find(p => p.id === imageProductId)?.images || []"
@@ -626,7 +626,7 @@ onMounted(() => {
       </div>
       <template #footer>
         <el-button @click="imageDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleUploadImages">上传閫変腑图片</el-button>
+        <el-button type="primary" @click="handleUploadImages">上传选中图片</el-button>
       </template>
     </el-dialog>
   </div>

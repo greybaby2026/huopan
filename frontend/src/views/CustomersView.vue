@@ -66,7 +66,7 @@ async function loadCustomers() {
 function levelName(id: number | null): string {
   if (!id) return '-'
   const level = levels.value.find((l) => l.id === id)
-  return level ? `${level.name}(${(level.discount_rate * 10).toFixed(1)}折)` : '-'
+  return level ? `${level.name}(${(level.discount_rate * 10).toFixed(1)}折` : '-'
 }
 
 function handleAdd() {
@@ -85,7 +85,7 @@ function handleEdit(row: Customer) {
 
 async function handleSave() {
   if (!editingCustomer.value.name) {
-    ElMessage.warning('客户鍚嶇必填')
+    ElMessage.warning('客户名称必填')
     return
   }
   try {
@@ -126,7 +126,7 @@ function handleEditLevel(row: CustomerLevel) {
 
 async function handleSaveLevel() {
   if (!editingLevel.value.name) {
-    ElMessage.warning('绾埆鍚嶇必填')
+    ElMessage.warning('级别名称必填')
     return
   }
   try {
@@ -146,7 +146,7 @@ async function handleSaveLevel() {
 
 async function handleDeleteLevel(row: CustomerLevel) {
   try {
-    await ElMessageBox.confirm(`确定删除绾埆 ${row.name}?`, '提示', { type: 'warning' })
+    await ElMessageBox.confirm(`确定删除级别 ${row.name}?`, '提示', { type: 'warning' })
     await customersApi.deleteLevel(row.id)
     ElMessage.success('已删除')
     loadLevels()
@@ -176,21 +176,21 @@ onMounted(() => {
       <el-card shadow="never">
         <el-table :data="customers" v-loading="loading" border style="width: 100%">
           <el-table-column type="index" label="#" width="50" />
-          <el-table-column prop="name" label="客户鍚嶇" width="150" />
+          <el-table-column prop="name" label="客户名称" width="150" />
           <el-table-column prop="company" label="公司" width="150" />
           <el-table-column prop="contact" label="联系人" width="100" />
           <el-table-column prop="phone" label="电话" width="130" />
-          <el-table-column label="绾埆" width="120">
+          <el-table-column label="级别" width="120">
             <template #default="{ row }">{{ levelName(row.level_id) }}</template>
           </el-table-column>
           <el-table-column label="状态" width="80">
             <template #default="{ row }">
               <el-tag :type="row.is_active ? 'success' : 'info'" size="small">
-                {{ row.is_active ? '鍚敤' : '鍋滅敤' }}
+                {{ row.is_active ? '启用' : '停用' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="note" label="失囨敞" min-width="120" show-overflow-tooltip />
+          <el-table-column prop="note" label="备注" min-width="120" show-overflow-tooltip />
           <el-table-column label="操作" width="150" fixed="right">
             <template #default="{ row }">
               <el-button size="small" link @click="handleEdit(row)">编辑</el-button>
@@ -204,7 +204,7 @@ onMounted(() => {
     <!-- 客户分级 -->
     <el-tab-pane label="客户分级" name="levels">
       <el-card shadow="never" style="margin-bottom: 12px">
-        <el-button type="success" @click="handleAddLevel">新增绾埆</el-button>
+        <el-button type="success" @click="handleAddLevel">新增级别</el-button>
       </el-card>
       <el-card shadow="never">
         <el-table :data="levels" border style="width: 100%">
@@ -225,17 +225,17 @@ onMounted(() => {
     </el-tab-pane>
   </el-tabs>
 
-  <!-- 客户寮圭獥 -->
+  <!-- 客户弹窗 -->
   <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px" destroy-on-close>
     <el-form :model="editingCustomer" label-width="80px">
-      <el-form-item label="鍚嶇" required><el-input v-model="editingCustomer.name" /></el-form-item>
+      <el-form-item label="名称" required><el-input v-model="editingCustomer.name" /></el-form-item>
       <el-form-item label="公司"><el-input v-model="editingCustomer.company" /></el-form-item>
       <el-form-item label="联系人"><el-input v-model="editingCustomer.contact" /></el-form-item>
       <el-form-item label="电话"><el-input v-model="editingCustomer.phone" /></el-form-item>
-      <el-form-item label="鍦板潃"><el-input v-model="editingCustomer.address" /></el-form-item>
-      <el-form-item label="绾埆">
+      <el-form-item label="地址"><el-input v-model="editingCustomer.address" /></el-form-item>
+      <el-form-item label="级别">
         <el-select v-model="editingCustomer.level_id" clearable style="width: 100%">
-          <el-option v-for="l in levels" :key="l.id" :label="`${l.name} (${(l.discount_rate * 10).toFixed(1)}折)`" :value="l.id" />
+          <el-option v-for="l in levels" :key="l.id" :label="`${l.name} (${(l.discount_rate * 10).toFixed(1)}折`" :value="l.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
@@ -249,10 +249,10 @@ onMounted(() => {
     </template>
   </el-dialog>
 
-  <!-- 绾埆寮圭獥 -->
-  <el-dialog v-model="levelDialogVisible" :title="editingLevel.id ? '编辑绾埆' : '新增绾埆'" width="400px" destroy-on-close>
+  <!-- 级别弹窗 -->
+  <el-dialog v-model="levelDialogVisible" :title="editingLevel.id ? '编辑级别' : '新增级别'" width="400px" destroy-on-close>
     <el-form :model="editingLevel" label-width="100px">
-      <el-form-item label="绾埆鍚嶇" required><el-input v-model="editingLevel.name" placeholder="A/B/C" /></el-form-item>
+      <el-form-item label="级别名称" required><el-input v-model="editingLevel.name" placeholder="A/B/C" /></el-form-item>
       <el-form-item label="折扣率">
         <el-input-number v-model="editingLevel.discount_rate" :min="0" :max="1" :step="0.05" :precision="2" style="width: 100%" />
         <div style="color: #909399; font-size: 12px">1.0=原价, 0.8=8折</div>
@@ -260,7 +260,7 @@ onMounted(() => {
       <el-form-item label="默认起订量">
         <el-input-number v-model="editingLevel.default_min_qty" :min="1" style="width: 100%" />
       </el-form-item>
-      <el-form-item label="鎺掑簭">
+      <el-form-item label="排序">
         <el-input-number v-model="editingLevel.sort_order" style="width: 100%" />
       </el-form-item>
     </el-form>

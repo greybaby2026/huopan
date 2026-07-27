@@ -49,12 +49,12 @@ const searchName = ref('')
 const searchCustomerId = ref<number | undefined>()
 
 const statusMap: Record<string, { label: string; type: string }> = {
-  available: { label: '鍙緵', type: 'success' },
-  low_stock: { label: '绱紶', type: 'warning' },
-  sold_out: { label: '鏂揣', type: 'danger' },
+  available: { label: '可供', type: 'success' },
+  low_stock: { label: '紧张', type: 'warning' },
+  sold_out: { label: '断货', type: 'danger' },
 }
 
-// 批量生成寮圭獥
+// 批量生成弹窗
 const batchDialogVisible = ref(false)
 const batchForm = reactive({
   name: '',
@@ -96,7 +96,7 @@ async function loadCustomers() {
     const lvlRes = await customersApi.levels()
     levels.value = lvlRes.data
   } catch {
-    // 蹇界暐
+    // 忽略
   }
 }
 
@@ -118,7 +118,7 @@ async function handleUpdateStatus(row: CatalogItem, status: string) {
   try {
     await catalogsApi.update(row.id, { stock_status: status })
     row.stock_status = status
-    ElMessage.success('状态佸凡更新')
+    ElMessage.success('状态已更新')
   } catch (e: any) {
     ElMessage.error('更新失败: ' + e.message)
   }
@@ -126,7 +126,7 @@ async function handleUpdateStatus(row: CatalogItem, status: string) {
 
 async function handleDelete(row: CatalogItem) {
   try {
-    await ElMessageBox.confirm(`确定删除璐洏椤?${row.product?.sku_code}?`, '提示', { type: 'warning' })
+    await ElMessageBox.confirm(`确定删除货盘项?${row.product?.sku_code}?`, '提示', { type: 'warning' })
     await catalogsApi.delete(row.id)
     ElMessage.success('已删除')
     loadData()
@@ -161,7 +161,7 @@ async function handleBatchCreate() {
       min_order_qty: batchForm.min_order_qty,
       product_ids: batchForm.selectedProductIds,
     })
-    ElMessage.success(`宸茬敓鎴?${batchForm.selectedProductIds.length} 个产品`)
+    ElMessage.success(`已生成?${batchForm.selectedProductIds.length} 个货盘项`)
     batchDialogVisible.value = false
     loadData()
   } catch (e: any) {
@@ -189,25 +189,25 @@ onMounted(() => {
   <div>
     <el-card shadow="never" style="margin-bottom: 12px">
       <div style="display: flex; gap: 8px; align-items: center">
-        <el-input v-model="searchName" placeholder="璐洏鍚嶇" clearable style="width: 200px" @keyup.enter="loadData" />
+        <el-input v-model="searchName" placeholder="货盘名称" clearable style="width: 200px" @keyup.enter="loadData" />
         <el-select v-model="searchCustomerId" clearable placeholder="客户" style="width: 160px" @change="loadData">
           <el-option v-for="c in customers" :key="c.id" :label="c.name" :value="c.id" />
         </el-select>
         <el-button type="primary" @click="loadData">搜索</el-button>
-        <el-button type="success" @click="openBatchDialog">生成璐洏</el-button>
+        <el-button type="success" @click="openBatchDialog">生成货盘</el-button>
       </div>
     </el-card>
 
     <el-card shadow="never" v-loading="loading">
       <div v-for="(items, name) in catalogGroups" :key="name" style="margin-bottom: 24px">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px">
-          <h3 style="margin: 0">{{ name }} ({{ items.length }}娆?</h3>
+          <h3 style="margin: 0">{{ name }} ({{ items.length }}项</h3>
           <div style="display: flex; gap: 8px">
             <el-button size="small" type="primary" @click="handleExportExcel(name, items[0]?.customer_id || undefined)">
               导出Excel
             </el-button>
             <el-button size="small" @click="handleExportImages(name, items[0]?.customer_id || undefined)">
-              导出图片鍖?            </el-button>
+              导出图片包            </el-button>
           </div>
         </div>
         <el-table :data="items" border size="small">
@@ -224,10 +224,10 @@ onMounted(() => {
               <span v-else style="color: #c0c4cc">无图</span>
             </template>
           </el-table-column>
-          <el-table-column label="娆惧彿" width="120">
+          <el-table-column label="款号" width="120">
             <template #default="{ row }">{{ row.product?.sku_code }}</template>
           </el-table-column>
-          <el-table-column label="鍚嶇" min-width="120">
+          <el-table-column label="名称" min-width="120">
             <template #default="{ row }">{{ row.product?.name }}</template>
           </el-table-column>
           <el-table-column label="品类" width="80">
@@ -250,9 +250,9 @@ onMounted(() => {
           <el-table-column label="状态" width="120">
             <template #default="{ row }">
               <el-select :model-value="row.stock_status" size="small" style="width: 100px" @change="(v: string) => handleUpdateStatus(row, v)">
-                <el-option label="鍙緵" value="available" />
-                <el-option label="绱紶" value="low_stock" />
-                <el-option label="鏂揣" value="sold_out" />
+                <el-option label="可供" value="available" />
+                <el-option label="紧张" value="low_stock" />
+                <el-option label="断货" value="sold_out" />
               </el-select>
             </template>
           </el-table-column>
@@ -263,11 +263,11 @@ onMounted(() => {
           </el-table-column>
         </el-table>
       </div>
-      <el-empty v-if="catalogs.length === 0" description="鏆傛棤璐洏数据" />
+      <el-empty v-if="catalogs.length === 0" description="暂无货盘数据" />
     </el-card>
 
-    <!-- 批量生成寮圭獥 -->
-    <el-dialog v-model="batchDialogVisible" title="生成璐洏" width="600px" destroy-on-close>
+    <!-- 批量生成弹窗 -->
+    <el-dialog v-model="batchDialogVisible" title="生成货盘" width="600px" destroy-on-close>
       <el-form :model="batchForm" label-width="100px">
         <el-form-item label="货盘名称" required>
           <el-input v-model="batchForm.name" placeholder="如: 2026春季-A级客户" />
@@ -287,7 +287,7 @@ onMounted(() => {
         <el-form-item label="产品ID">
           <el-input
             v-model="batchForm.selectedProductIds"
-            placeholder="杈撳叆产品ID, 閫楀彿鍒嗛殧"
+            placeholder="输入产品ID, 逗号分隔"
           />
           <div style="color: #909399; font-size: 12px">用供应价乘以此折扣率自动算价, 0.8=8折</div>
         </el-form-item>

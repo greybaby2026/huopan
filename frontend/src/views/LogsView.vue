@@ -23,11 +23,11 @@ const filterAction = ref('')
 const filterType = ref('')
 
 const actionMap: Record<string, string> = {
-  create: '创建', update: '淇敼', delete: '删除',
-  batch_update: '批量淇敼', export: '导出',
+  create: '创建', update: '修改', delete: '删除',
+  batch_update: '批量修改', export: '导出',
 }
 const typeMap: Record<string, string> = {
-  product: '产品', customer: '客户', catalog: '璐洏', user: '鐢埛',
+  product: '产品', customer: '客户', catalog: '货盘', user: '用户',
 }
 
 async function loadLogs() {
@@ -51,7 +51,7 @@ onMounted(loadLogs)
   <div>
     <el-card shadow="never" style="margin-bottom: 12px">
       <el-form :inline="true">
-        <el-form-item label="操作绫诲瀷">
+        <el-form-item label="操作类型">
           <el-select v-model="filterAction" clearable style="width: 120px" @change="loadLogs">
             <el-option v-for="(v,k) in actionMap" :key="k" :label="v" :value="k" />
           </el-select>
@@ -61,7 +61,7 @@ onMounted(loadLogs)
             <el-option v-for="(v,k) in typeMap" :key="k" :label="v" :value="k" />
           </el-select>
         </el-form-item>
-        <el-button type="primary" @click="loadLogs">鍒锋柊</el-button>
+        <el-button type="primary" @click="loadLogs">刷新</el-button>
       </el-form>
     </el-card>
 

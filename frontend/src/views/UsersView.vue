@@ -92,7 +92,7 @@ onMounted(loadUsers)
 <template>
   <div>
     <el-card shadow="never" style="margin-bottom: 12px">
-      <el-button type="success" @click="handleAdd">新增鐢埛</el-button>
+      <el-button type="success" @click="handleAdd">新增用户</el-button>
     </el-card>
 
     <el-card shadow="never" v-loading="loading">
@@ -106,7 +106,7 @@ onMounted(loadUsers)
         <el-table-column label="状态" width="80">
           <template #default="{ row }">
             <el-tag :type="row.is_active ? 'success' : 'info'" size="small">
-              {{ row.is_active ? '鍚敤' : '鍋滅敤' }}
+              {{ row.is_active ? '启用' : '停用' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -114,14 +114,14 @@ onMounted(loadUsers)
           <template #default="{ row }">
             <el-button size="small" link @click="handleEdit(row)">编辑</el-button>
             <el-button size="small" link :type="row.is_active ? 'warning' : 'success'" @click="handleToggleActive(row)">
-              {{ row.is_active ? '鍋滅敤' : '鍚敤' }}
+              {{ row.is_active ? '停用' : '启用' }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
 
-    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑鐢埛' : '新增鐢埛'" width="400px" destroy-on-close>
+    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑用户' : '新增用户'" width="400px" destroy-on-close>
       <el-form :model="editingUser" label-width="80px">
         <el-form-item label="用户名" required><el-input v-model="editingUser.username" /></el-form-item>
         <el-form-item :label="isEdit ? '新密码' : '密码'" :required="!isEdit">
